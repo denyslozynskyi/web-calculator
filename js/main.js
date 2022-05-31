@@ -52,6 +52,7 @@ function getResult() {
             userInputArr.push(userNumber)
         } 
     }
+    console.log(userInputArr)
 
     let number1 = +userInputArr[0]
     let number2 = +userInputArr[2]
@@ -61,9 +62,7 @@ function getResult() {
         number1 = +(userInputArr[1] + userInputArr[2])
         number2 = +userInputArr[4]
         operation = userInputArr[3]
-    }
-    
-    if (userInputArr[3] === '-') {
+    } else if (userInputArr[3] === '-') {
         number1 = +userInputArr[0]
         number2 = +(userInputArr[3] + userInputArr[4])
         operation = userInputArr[1]
@@ -74,6 +73,8 @@ function getResult() {
         number2 = +(userInputArr[5] + userInputArr[6])
         operation = userInputArr[3]
     }
+
+    console.log(number1, number2, operation)
     
     let result = 0
 
