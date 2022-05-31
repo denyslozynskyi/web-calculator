@@ -6,7 +6,33 @@ let operation = undefined
 
 function keyClick(e) {
     let keyPressed = e.target.id
-    resultField.innerText = resultField.innerText + keyPressed
+
+    function checkResultField() {
+        let firstChars = ['+', '-', 'X', '/']
+        let secondChars = ['+', 'X', '/']
+        let lastChar = resultField.innerText.slice(-1)
+
+        if (firstChars.includes(lastChar) && secondChars.includes(keyPressed)) {
+            return false
+        }
+
+        if (lastChar === '-' && keyPressed === '-') {
+            return false
+        }
+
+        if (resultField.innerText === '' && secondChars.includes(keyPressed)) {
+            return false
+        }
+
+        return true
+    }
+
+    if (checkResultField()) {
+        resultField.innerText = resultField.innerText + keyPressed
+    } else {
+        alert('Incorect input')
+    }
+
 }
 
 function getResult() {
@@ -29,9 +55,29 @@ function getResult() {
 
     let number1 = +userInputArr[0]
     let number2 = +userInputArr[2]
+    let operation = userInputArr[1]
+
+    if (userInput[0] === '-') {
+        number1 = +(userInputArr[1] + userInputArr[2])
+        number2 = +userInputArr[4]
+        operation = userInputArr[3]
+    }
+    
+    if (userInputArr[3] === '-') {
+        number1 = +userInputArr[0]
+        number2 = +(userInputArr[3] + userInputArr[4])
+        operation = userInputArr[1]
+    }
+    
+    if (userInputArr[1] === '-' && userInputArr[5] === '-') {
+        number1 = +(userInputArr[1] + userInputArr[2])
+        number2 = +(userInputArr[5] + userInputArr[6])
+        operation = userInputArr[3]
+    }
+    
     let result = 0
 
-    switch(userInputArr[1]) {
+    switch(operation) {
         case '+':
             result = number1 + number2
             break
@@ -42,12 +88,22 @@ function getResult() {
             result = number1 * number2
             break
         case '/':
-            result = number1 / number2
-            result = Math.round(result * 100) / 100
+            if (number2 === 0) {
+                alert('No division by 0!')
+                resetCalculator()
+                result = ''
+            } else {
+                result = number1 / number2
+                result = Math.round(result * 100) / 100
+            }            
             break
     }
     
     resultField.innerText = result
+}
+
+function resetCalculator() {
+    resultField.innerText = ''
 }
 
 for (let i = 0; i < 4; i++) {
@@ -80,7 +136,6 @@ for (let i = 0; i < 4; i++) {
 keyResult = document.getElementById('=')
 keyResult.removeEventListener('click', keyClick)
 keyResult.addEventListener('click', getResult)
+
 keyReset = document.getElementById('C')
-keyReset.addEventListener('click', (e) => {
-    resultField.innerText = ''
-})
+keyReset.addEventListener('click', resetCalculator)
